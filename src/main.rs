@@ -1,11 +1,12 @@
-use anyhow::Error;
-use argh::FromArgs;
+mod error;
+
 use std::fs;
 use std::fs::OpenOptions;
 use std::io::{Cursor, Write};
 use std::path::{Path, PathBuf};
-use std::process::exit;
 
+use crate::error::Error;
+use argh::FromArgs;
 use ini::Ini;
 use steamlocate::{SteamApp, SteamDir};
 use zip::ZipArchive;
@@ -69,22 +70,19 @@ struct Installer {
     enable_console: bool,
 }
 
-fn main() -> Result<(), Error> {
-    let installer: Installer = argh::from_env();
+fn run(installer: Installer) -> Result<(), Error> {
     let game_path = match installer.path {
         Some(d) => {
             if Path::new(&d).exists() {
                 d
             } else {
-                eprintln!("Directory doesn't exist!");
-                exit(1)
+                return Err(Error::MissingDirectory);
             }
         }
         None => {
             let pw = locate_game();
             if pw.is_none() {
-                eprintln!("Game not found!");
-                exit(1);
+                return Err(Error::GameNotFound);
             }
             pw.unwrap().path
         }
@@ -93,13 +91,7 @@ fn main() -> Result<(), Error> {
     let bin_path = game_path.join("Pal/Binaries/Win64");
     fs::create_dir_all(&bin_path)?;
 
-    match download_ue4ss(&bin_path) {
-        Ok(_) => {}
-        Err(err) => {
-            eprintln!("Failed to download UE4SS: {err}");
-            exit(1)
-        }
-    }
+    download_ue4ss(&bin_path)?;
 
     if installer.enable_console {
         let ini_path = bin_path.join("UE4SS-settings.ini");
@@ -108,5 +100,16 @@ fn main() -> Result<(), Error> {
 
     write_lua(&bin_path)?;
 
+    Ok(())
+}
+
+fn main() -> Result<(), Error> {
+    let installer: Installer = argh::from_env();
+    match run(installer) {
+        Ok(_) => println!("Installed successfully!"),
+        Err(error) => eprintln!("{error}"),
+    }
+
+    press_btn_continue::wait("Press any key to continue...")?;
     Ok(())
 }

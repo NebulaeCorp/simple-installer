@@ -38,12 +38,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "anyhow"
-version = "1.0.79"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca"
-
-[[package]]
 name = "argh"
 version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -947,6 +941,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 
 [[package]]
+name = "press-btn-continue"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ea399120e7666ff7299eff8f5a6cbf7f9be5e83ad7827be6bbc707481aad4e23"
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1191,13 +1191,14 @@ dependencies = [
 
 [[package]]
 name = "simple-installer-pw-rs"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
- "anyhow",
  "argh",
+ "press-btn-continue",
  "reqwest",
  "rust-ini",
  "steamlocate",
+ "thiserror",
  "zip",
  "zip-extensions",
 ]
