@@ -36,12 +36,12 @@ fn download_ue4ss(game_path: &PathBuf) -> Result<(), Error> {
 
 fn enable_console(ini_path: &PathBuf) -> Result<(), Error> {
     let mut file_content = String::new();
-    let mut file = File::open(&ini_path)?;
+    let mut file = File::open(ini_path)?;
     file.read_to_string(&mut file_content)?;
 
     file_content = file_content.replace("ConsoleEnabled = 0", "ConsoleEnabled = 1");
 
-    let mut modified_file = fs::File::create(&ini_path)?;
+    let mut modified_file = fs::File::create(ini_path)?;
     modified_file.write_all(file_content.as_bytes())?;
 
     Ok(())
