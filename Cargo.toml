@@ -1,6 +1,8 @@
 [package]
 name = "simple-installer-pw-rs"
-version = "0.1.0"
+version = "1.0.0"
+authors = ["funlennysub"]
+license = "MIT"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -12,3 +14,4 @@ zip = "0.6"
 zip-extensions = "0.6"
 rust-ini = "0.20.0"
 anyhow = "1.0.79"
+argh = "0.1.12"
