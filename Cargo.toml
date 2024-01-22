@@ -8,11 +8,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = {version =  "0.11.23", features = ["blocking"] }
+reqwest = { version = "0.11.23", features = ["blocking"] }
 steamlocate = "1.2.1"
 zip = "0.6"
 zip-extensions = "0.6"
-rust-ini = "0.20.0"
 argh = "0.1.12"
 thiserror = "1.0.56"
 press-btn-continue = "0.2.0"
