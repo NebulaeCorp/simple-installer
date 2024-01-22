@@ -1,13 +1,12 @@
 mod error;
 
-use std::fs;
 use std::fs::OpenOptions;
-use std::io::{Cursor, Write};
+use std::fs::{self, File};
+use std::io::{Cursor, Read, Write};
 use std::path::{Path, PathBuf};
 
 use crate::error::Error;
 use argh::FromArgs;
-use ini::Ini;
 use steamlocate::{SteamApp, SteamDir};
 use zip::ZipArchive;
 
@@ -36,9 +35,14 @@ fn download_ue4ss(game_path: &PathBuf) -> Result<(), Error> {
 }
 
 fn enable_console(ini_path: &PathBuf) -> Result<(), Error> {
-    let mut ini_file = Ini::load_from_file(ini_path)?;
-    ini_file.set_to(Some("Debug"), "ConsoleEnabled".to_string(), "1".to_string());
-    ini_file.write_to_file(ini_path)?;
+    let mut file_content = String::new();
+    let mut file = File::open(&ini_path)?;
+    file.read_to_string(&mut file_content)?;
+
+    file_content = file_content.replace("ConsoleEnabled = 0", "ConsoleEnabled = 1");
+
+    let mut modified_file = fs::File::create(&ini_path)?;
+    modified_file.write_all(file_content.as_bytes())?;
 
     Ok(())
 }

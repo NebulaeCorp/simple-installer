@@ -14,7 +14,5 @@ pub enum Error {
     #[error(transparent)]
     Reqwest(#[from] reqwest::Error),
     #[error(transparent)]
-    Ini(#[from] ini::Error),
-    #[error(transparent)]
     Io(#[from] io::Error),
 }
