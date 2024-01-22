@@ -31,6 +31,7 @@ fn download_ue4ss(game_path: &PathBuf) -> Result<(), Error> {
 
     let content = Cursor::new(resp.to_vec());
     ZipArchive::new(content)?.extract(game_path)?;
+
     Ok(())
 }
 
@@ -115,5 +116,6 @@ fn main() -> Result<(), Error> {
     }
 
     press_btn_continue::wait("Press any key to continue...")?;
+
     Ok(())
 }
