@@ -48,6 +48,19 @@ fn enable_console(ini_path: &PathBuf) -> Result<(), Error> {
     Ok(())
 }
 
+fn enable_logicmods(cfg_path: &PathBuf) -> Result<(), Error> {
+    let mut file_content = String::new();
+    let mut file = File::open(cfg_path)?;
+    file.read_to_string(&mut file_content)?;
+
+    file_content = file_content.replace("BPModLoaderMod : 0", "BPModLoaderMod : 1");
+
+    let mut modified_file = File::create(cfg_path)?;
+    modified_file.write_all(file_content.as_bytes())?;
+
+    Ok(())
+}
+
 fn write_lua(bin_path: &Path) -> Result<(), Error> {
     let sigs_path = &bin_path.join("UE4SS_Signatures");
     fs::create_dir_all(sigs_path)?;
@@ -94,9 +107,13 @@ fn run(installer: Installer) -> Result<(), Error> {
     };
 
     let bin_path = game_path.join("Pal/Binaries/Win64");
+    let content_path = game_path.join("Pal/Content/Paks/LogicMods");
     fs::create_dir_all(&bin_path)?;
+    fs::create_dir_all(&content_path)?;
 
     download_ue4ss(&bin_path)?;
+
+    enable_logicmods(&bin_path.join("Mods/mods.txt"))?;
 
     if installer.enable_console {
         let ini_path = bin_path.join("UE4SS-settings.ini");

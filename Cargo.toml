@@ -1,6 +1,6 @@
 [package]
 name = "simple-installer-pw-rs"
-version = "1.1.1"
+version = "1.2.0"
 authors = ["funlennysub"]
 license = "MIT"
 edition = "2021"
